@@ -1,16 +1,16 @@
 import React from 'react';
 import ContactListStyled from './ContactListStyled';
 import { useDispatch, useSelector } from 'react-redux';
-import { removeContact } from '../redux/contactsSlice';
-import { selectContacts, selectFilter } from '../redux/selectors';
+import { deleteContactAsync } from '../redux/contactsSlice';
+import { selectFilter } from '../redux/selectors';
 
 const ContactList = () => {
-  const contacts = useSelector(selectContacts);
+  const contacts = useSelector(state => state.contacts.items);
   const filter = useSelector(selectFilter);
   const dispatch = useDispatch();
 
   const handleDelete = contactId => {
-    dispatch(removeContact(contactId));
+    dispatch(deleteContactAsync(contactId));
   };
 
   return (
