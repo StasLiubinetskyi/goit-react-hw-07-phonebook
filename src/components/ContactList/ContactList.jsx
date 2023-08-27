@@ -2,10 +2,11 @@ import React from 'react';
 import ContactListStyled from './ContactListStyled';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteContactAsync } from '../redux/contactsSlice';
-import { selectFilter } from '../redux/selectors';
+import { selectFilter, selectContacts } from '../redux/selectors';
+import { nanoid } from 'nanoid';
 
 const ContactList = () => {
-  const contacts = useSelector(state => state.contacts.items);
+  const contacts = useSelector(selectContacts);
   const filter = useSelector(selectFilter);
   const dispatch = useDispatch();
 
@@ -21,7 +22,7 @@ const ContactList = () => {
             contact.name.toLowerCase().includes(filter.toLowerCase())
           )
           .map(({ id, name, number }) => (
-            <li key={id}>
+            <li key={nanoid()}>
               {name}: {number}
               <button type="button" onClick={() => handleDelete(id)}>
                 Delete
