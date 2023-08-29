@@ -1,8 +1,8 @@
 import React from 'react';
 import ContactListStyled from './ContactListStyled';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteContactAsync } from '../redux/contactsSlice';
-import { selectFilter, selectContacts } from '../redux/selectors';
+import { deleteContactAsync } from '../../redux/contactsSlice';
+import { selectFilter, selectContacts } from '../../redux/selectors';
 import { nanoid } from 'nanoid';
 
 const ContactList = () => {

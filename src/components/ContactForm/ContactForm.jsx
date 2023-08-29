@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import ContactFormStyled from './ContactFormStyled';
-import { useDispatch } from 'react-redux';
-import { addContactAsync } from '../redux/contactsSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { addContactAsync } from '../../redux/contactsSlice';
+import { selectContacts } from '../../redux/selectors';
 
 const ContactForm = () => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
+  const contacts = useSelector(selectContacts);
   const dispatch = useDispatch();
 
   const handleNameChange = event => {
@@ -22,19 +24,37 @@ const ContactForm = () => {
     }
   };
 
+  const errorNotify = target => {
+    alert(`${target} already exists.`);
+  };
+
   const handleSubmit = event => {
     event.preventDefault();
-    if (name.trim() !== '' && number.trim() !== '') {
-      const newContactData = {
-        name: name.trim(),
-        number: number.trim(),
-      };
 
-      dispatch(addContactAsync(newContactData));
-
-      setName('');
-      setNumber('');
+    if (name.trim() === '' || number.trim() === '') {
+      return;
     }
+
+    const isDuplicate = contacts.some(
+      contact =>
+        contact.name.toLowerCase() === name.toLowerCase() ||
+        contact.number === number
+    );
+
+    if (isDuplicate) {
+      errorNotify('This contact');
+      return;
+    }
+
+    const newContactData = {
+      name: name.trim(),
+      number: number.trim(),
+    };
+
+    dispatch(addContactAsync(newContactData));
+
+    setName('');
+    setNumber('');
   };
 
   return (
